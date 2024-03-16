@@ -1,4 +1,4 @@
-#tshark -r icsi525-S24_p1_trace.pcapng -T fields -E separator=\ -e frame.time_relative -e wlan.fc -e frame.len > output.txt
+#tshark -r icsi525-S24_p1_trace.pcapng -T fields -E separator=\ -e frame.time_relative -e wlan_radio.duration -e frame.len > output.txt
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -13,10 +13,11 @@ def throughputANDutilization(input):
     dfutil['mbps'] = dfutil['Size'].div(1000000)
     dfutil.plot(y='Utilization', ylabel='Percent Utilization', xlabel='Time (s)', title='Channel Utilization', legend=False)
     plt.show()
+    #Throughput
     dfutil.plot(y='mbps', ylabel='Throughput (mbps)', xlabel='Time (s)', title='Throughput over Time', legend=False)
     plt.show()
 
-    #Throughput
+    #Percent Utilization vs throughput
     dfthroughput = dfutil
     dfthroughput['Utilization'] = dfthroughput['Utilization'].astype(int)
     dfthroughput = dfthroughput.groupby(['Utilization']).mean()
